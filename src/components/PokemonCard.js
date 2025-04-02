@@ -1,20 +1,32 @@
-import React from "react";
+import { useState } from 'react';
 import { Card } from "semantic-ui-react";
 
-function PokemonCard() {
+function PokemonCard({pok}) {
+
+const [ onFront, setOnFront ] = useState(true)
+
+const onFlip = () => {
+  setOnFront(!onFront)
+}
+
   return (
     <Card>
-      <div>
+      <div onClick={onFlip}> 
         <div className="image">
-          <img alt="oh no!" />
+          {  
+          onFront ?
+            <img src={pok.sprites.front} alt='front' /> :
+            <img src={pok.sprites.back} alt='back' />
+          }
+         
         </div>
         <div className="content">
-          <div className="header">POKEMON NAME HERE</div>
+          <div className="header">{pok.name}</div>
         </div>
         <div className="extra content">
           <span>
             <i className="icon heartbeat red" />
-            POKEMON HP HERE hp
+            {pok.hp}
           </span>
         </div>
       </div>
