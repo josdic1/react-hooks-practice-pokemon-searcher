@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useEffect } from 'react';
 import PokemonCollection from "./PokemonCollection";
 import PokemonForm from "./PokemonForm";
 import Search from "./Search";
@@ -6,10 +6,23 @@ import { Container } from "semantic-ui-react";
 
 function PokemonPage({items, addPokemon}) {
 
+const [filteredList, setFilteredList ] = useState(items)
+const [isSearching, setIsSearching] = useState(false);
 
-
+const onFilter = (val) => {
+  if (val.trim() === "") {
+    setIsSearching(false);
+  } else {
+    setIsSearching(true);
+    const filteredListData = items.filter(pok =>
+      pok.name.toLowerCase().includes(val.toLowerCase())
+    );
+    setFilteredList(filteredListData);
+  }
+};
 
   return (
+   
     <Container>
       <h1>Pokemon Searcher</h1>
       <br />
@@ -17,12 +30,13 @@ function PokemonPage({items, addPokemon}) {
       addPokemon={addPokemon}
       />
       <br />
-      <Search />
+      <Search onFilter={onFilter}/>
       <br />
       <PokemonCollection 
-      items={items}
+      items={isSearching ? filteredList : items}
       />
     </Container>
+    
   );
 }
 
